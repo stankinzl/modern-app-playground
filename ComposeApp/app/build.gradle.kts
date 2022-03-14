@@ -87,6 +87,8 @@ dependencies {
     implementation("androidx.multidex:multidex:2.0.1") // https://developer.android.com/studio/build/multidex
     implementation("androidx.appcompat:appcompat:1.4.1")
     implementation("androidx.window:window:1.0.0")
+    // Logging
+    implementation("com.jakewharton.timber:timber:4.7.1")
 
     //_________UI Libs Dependencies_____________________________________________
     implementation("com.google.android.material:material:1.5.0")
