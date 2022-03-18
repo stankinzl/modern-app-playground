@@ -1,4 +1,6 @@
+import org.gradle.api.DomainObjectCollection
 import kotlin.collections.*
+
 
 plugins {
     id("com.android.application")
@@ -30,7 +32,14 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    buildFeatures.viewBinding = true
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+    buildFeatures.compose = true
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.1.1"
+    }
+
     lintOptions.isAbortOnError = false
 
     val meta = "META-INF/"
@@ -70,9 +79,10 @@ android {
             dimension = defaultFlavorDimension
         }
     }
-
-    sourceSets["main"].java { // setup for ksp
-        srcDirs("build/generated/ksp/main/kotlin")
+    applicationVariants.all {
+        sourceSets {
+            getByName(name).java.srcDirs("build/generated/ksp/${name}/kotlin")
+        }
     }
 }
 
@@ -172,10 +182,4 @@ dependencies {
     }
     androidTestImplementation("androidx.test:runner:1.4.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
-}
-
-// Required for Epoxy as of 4.6.3
-project.android.buildTypes.forEach { buildType ->
-    buildType.javaCompileOptions.annotationProcessorOptions
-        .setArguments(mapOf(Pair("epoxyDisableDslMarker", "true")))
 }
